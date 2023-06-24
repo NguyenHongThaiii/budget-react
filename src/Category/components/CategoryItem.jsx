@@ -4,18 +4,15 @@ import React from "react";
 function CategoryItem({ cat = {}, onShow = null }) {
   return (
     <Typography
-      onClick={() => onShow(cat)}
       component="li"
       sx={{
         textAlign: "center",
         cursor: "pointer",
         transition: "all 0.2s linear",
-        "&:hover": {
-          transform: "scale(1.1)",
-        },
       }}
     >
       <Box
+        onClick={() => onShow(cat)}
         sx={{
           padding: "20px",
           width: 50,
@@ -27,6 +24,9 @@ function CategoryItem({ cat = {}, onShow = null }) {
           border: "5px solid #dd80df",
           mb: 1,
           transition: "all 0.1s linear",
+          "&:hover": {
+            transform: "scale(1.1)  ",
+          },
         }}
       >
         <Box

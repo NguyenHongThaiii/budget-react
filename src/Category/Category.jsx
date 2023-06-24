@@ -74,7 +74,14 @@ const Category = observer(({ store }) => {
         >
           Category
         </Typography>
-        <Box sx={{ display: "flex", columnGap: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            columnGap: 1,
+            position: "relative", // Add this line
+            zIndex: 1, // Add this line
+          }}
+        >
           <ButtonMove
             type="prev"
             text="Previous"
