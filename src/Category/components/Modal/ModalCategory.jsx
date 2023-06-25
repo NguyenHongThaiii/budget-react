@@ -54,6 +54,7 @@ function ModalCategory({ onShow = null, onSubmit = null }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        zIndex: 10000,
       }}
     >
       <Box

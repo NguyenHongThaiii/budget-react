@@ -25,6 +25,7 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        zIndex: 10000,
       }}
     >
       <Box
