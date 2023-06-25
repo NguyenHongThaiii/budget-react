@@ -52,6 +52,7 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
             fontWeight: 600,
             paddingBottom: "20px",
             borderBottom: "1px solid #ccc",
+            color: "#000",
           }}
         >
           <Box

@@ -29,7 +29,7 @@ function ModalBillItem({ budgetItem = {} }) {
           gap: "12px",
         }}
       >
-        <Box className="frame-body__title">
+        <Box className="frame-body__title" sx={{ color: "#000" }}>
           {budgetItem?.title}:{" "}
           <Typography
             component="span"

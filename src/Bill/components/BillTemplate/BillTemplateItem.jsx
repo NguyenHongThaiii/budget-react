@@ -36,6 +36,7 @@ function BillTemplateItem({ type = "income", item = {}, onShow = null }) {
           display: "flex",
           flexDirection: "column",
           gap: "12px",
+          color: "#000",
         }}
       >
         <Typography

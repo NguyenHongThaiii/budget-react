@@ -63,6 +63,7 @@ function ModalCategory({ onShow = null, onSubmit = null }) {
           background: "white",
           borderRadius: "8px",
           padding: "24px 32px",
+          color: "#000",
         }}
       >
         <Typography
