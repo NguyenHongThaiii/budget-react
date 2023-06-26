@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import BillTemplateItem from "./BillTemplateItem";
+import { Store } from "./../../../store/store";
 
 function BillTemplate({ type = "income", onShow = null, budgetList = [] }) {
   return (
@@ -10,7 +11,7 @@ function BillTemplate({ type = "income", onShow = null, budgetList = [] }) {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: "16px",
+        gap: "20px",
         width: "50%",
         padding: 0,
       }}
@@ -22,9 +23,10 @@ function BillTemplate({ type = "income", onShow = null, budgetList = [] }) {
           fontSize: "20px",
           fontWeight: "600",
           margin: "0 0 20px",
+          textTransform: "capitalize",
         }}
       >
-        Income
+        {type}
       </Box>
       {budgetList.map((item, i) => (
         <BillTemplateItem
@@ -32,6 +34,7 @@ function BillTemplate({ type = "income", onShow = null, budgetList = [] }) {
           item={item}
           key={item.id + i}
           onShow={onShow}
+          store={Store}
         />
       ))}
     </Box>

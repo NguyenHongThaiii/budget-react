@@ -23,11 +23,11 @@ const schema = yup
   })
   .required();
 
-function ModalCategory({ onShow = null, onSubmit = null }) {
+function ModalCategory({ onShow = null, onSubmit = null, cat = {} }) {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       amount: 1,
@@ -91,7 +91,7 @@ function ModalCategory({ onShow = null, onSubmit = null }) {
             }}
           >
             {" "}
-            salary
+            {cat?.name}
           </Typography>
         </Typography>
         <form
@@ -195,27 +195,19 @@ function ModalCategory({ onShow = null, onSubmit = null }) {
               alignItems: "center",
             }}
           >
-            <ButtonCommon text="Cancel" onShow={onShow} />
-            <ButtonCommon text="Create one" color="success" type="submit" />
+            <ButtonCommon
+              text="Cancel"
+              onShow={onShow}
+              color="#fff"
+              backgroundColor="#858282"
+            />
+            <ButtonCommon
+              disabled={isSubmitting}
+              text="Create one"
+              status="success"
+              type="submit"
+            />
           </Box>
-          {(errors?.description ||
-            errors?.action ||
-            errors?.amount ||
-            errors?.title) && (
-            <Box
-              className="modal-error"
-              sx={{
-                margin: "12px 0",
-                textAlign: "center",
-                color: "red",
-                fontStyle: "italic",
-                fontWeight: "600",
-                display: "block",
-              }}
-            >
-              Please fill out all the field!
-            </Box>
-          )}
         </form>
       </Box>
     </Box>

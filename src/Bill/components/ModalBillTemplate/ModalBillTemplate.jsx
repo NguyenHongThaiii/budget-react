@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase/firebase-config";
 import ModalBillItem from "./ModalBillItem";
 
-function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
-  const [budgetItem, setBudgetItem] = useState({});
-  const budgetItemRef = doc(db, "budget-item", budgetId);
+function ModalBillTemplate({ onShow = null, parentId = "", store = {} }) {
+  const [budgetList, setBudgetList] = useState([{}]);
   useEffect(() => {
-    getDoc(budgetItemRef).then((doc) => {
-      setBudgetItem({ ...doc.data() });
-    });
+    const data = JSON.parse(JSON.stringify(store.budgetList))?.filter(
+      (budgetItem) => budgetItem?.parentId === parentId
+    );
+    setBudgetList(data);
   }, []);
   return (
     <Box
@@ -35,7 +35,7 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
           padding: "32px",
           borderRadius: "6px",
           borderTop:
-            budgetItem?.action === "income"
+            budgetList[0]?.action === "income"
               ? "7px solid #30c4d7"
               : "7px solid #dd80df",
           minWidth: "300px",
@@ -60,19 +60,19 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
             sx={{
               padding: "8px",
               border:
-                budgetItem?.action === "income"
+                budgetList[0]?.action === "income"
                   ? "5px solid #30c4d7"
                   : "5px solid #dd80df",
               fontSize: 24,
             }}
           >
             $
-            {budgetItem?.action === "income"
+            {budgetList[0]?.action === "income"
               ? store.getTotalBillIncome
               : store.getTotalBillCost}
           </Box>
           <Box className="frame-body__head" sx={{ fontSize: 24 }}>
-            {budgetItem?.head}
+            {budgetList[0]?.head}
           </Box>
         </Box>
         <Box
@@ -86,7 +86,9 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
             padding: 0,
           }}
         >
-          <ModalBillItem budgetItem={budgetItem} />
+          {budgetList?.map((budgetItem, i) => (
+            <ModalBillItem budgetItem={budgetItem} key={budgetItem?.id + i} />
+          ))}
         </Box>
         <Box
           className="frame-body__close"
@@ -94,8 +96,7 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
             "&>button": {
               color: "#fff",
               transition: "all 0.2s linear",
-              backgroundColor:
-                budgetItem?.action === "income" ? " #30c4d7 " : " #dd80df ",
+              backgroundColor: "#30c4d7",
               textTransform: "capitalize",
               "&:hover": {
                 opacity: 0.8,
@@ -106,7 +107,7 @@ function ModalBillTemplate({ onShow = null, budgetId = "", store = {} }) {
             marginTop: "30px",
           }}
         >
-          <Button variant="contained" size="small" onClick={onShow} sx={{}}>
+          <Button variant="contained" size="small" onClick={onShow}>
             Close!
           </Button>
         </Box>

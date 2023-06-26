@@ -1,10 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { handleTotalEachBudget } from "../../../utils";
 
-function BillTemplateItem({ type = "income", item = {}, onShow = null }) {
+function BillTemplateItem({
+  type = "income",
+  item = {},
+  onShow = null,
+  store = {},
+}) {
   return (
     <Typography
-      onClick={() => onShow(item.id)}
+      onClick={() => onShow(item?.id)}
       component="li"
       className="bill-template__box"
       sx={{
@@ -18,14 +24,14 @@ function BillTemplateItem({ type = "income", item = {}, onShow = null }) {
         sx={{
           width: "60px",
           height: "60px",
-          border: "3px solid #30c4d7",
+          border: type === "income" ? "3px solid #30c4d7" : "3px solid #dd80df",
           padding: "20px",
           borderRadius: "8px",
           cursor: "pointer",
         }}
       >
         <img
-          src="./img/salary.png"
+          src={`./img/${item?.image}`}
           alt="salary"
           className="bill-template__img"
         />
@@ -35,7 +41,7 @@ function BillTemplateItem({ type = "income", item = {}, onShow = null }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: "12px",
+          gap: "6px",
           color: "#000",
         }}
       >
@@ -57,7 +63,7 @@ function BillTemplateItem({ type = "income", item = {}, onShow = null }) {
             fontWeight: 550,
           }}
         >
-          ${item?.amount}
+          {type === "cost" ? "-" : ""}${handleTotalEachBudget(store, item)}
         </Typography>
         <Typography
           component="p"

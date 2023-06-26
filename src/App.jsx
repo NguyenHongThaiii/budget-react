@@ -1,22 +1,24 @@
-import { useState } from "react";
-import { Box, Container } from "@mui/material";
-import Header from "./Header/Header";
-import Category from "./Category/Category";
-import Bill from "./Bill/Bill";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import LoginPage from "./Auth/LoginPage/LoginPage";
+import RegisterPage from "./Auth/RegisterPage/RegisterPage";
+import MainPage from "./Main/MainPage";
 import { Store } from "./store/store";
-
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainPage store={Store} />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage store={Store} />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage store={Store} />,
+  },
+]);
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    // <Box maxWidth="800px" m="200px auto 200px">
-    <Container maxWidth="md" sx={{ marginY: 25 }}>
-      <Header store={Store} />
-      <Category store={Store} />
-      <Bill store={Store} />
-    </Container>
-    // </Box>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

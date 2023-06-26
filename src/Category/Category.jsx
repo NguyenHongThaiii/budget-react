@@ -18,8 +18,8 @@ const Category = observer(({ store }) => {
   const [category, setCategory] = useState({});
   const handleSlideListBudget = (type = "next") => {
     if (type === "next") {
-      if (slide.countNext >= budgetListRef.current.children.length - 5) return;
-      const temp = slide.countNext + 5;
+      if (slide.countNext >= budgetListRef.current.children.length - 3) return;
+      const temp = slide.countNext + 3;
 
       Array.from(budgetListRef.current.childNodes).map((item, index) => {
         item.style.transform =
@@ -29,8 +29,8 @@ const Category = observer(({ store }) => {
     } else {
       slide.countPrev = slide.countNext;
       if (slide.countPrev == 0) return;
-      slide.countPrev -= 5;
-      slide.countNext -= 5;
+      slide.countPrev -= 3;
+      slide.countNext -= 3;
       Array.from(budgetListRef.current.childNodes).map((item, index) => {
         item.style.transform =
           "translateX(" +
@@ -46,12 +46,11 @@ const Category = observer(({ store }) => {
     setCategory(cat);
   };
   useEffect(() => {
-    store.getCategoryList();
+    (async () => {
+      await store.getCategoryList();
+      setListCats(JSON.parse(JSON.stringify(store.categoryList)));
+    })();
   }, []);
-
-  useEffect(() => {
-    setListCats(JSON.parse(JSON.stringify(store.categoryList)));
-  }, [store.categoryList]);
 
   const handleOnSubmit = async (formValues) => {
     await store.addBudgetItem(formValues, category);
@@ -65,6 +64,7 @@ const Category = observer(({ store }) => {
         alignItems: "center",
         gap: "0 40px",
         padding: "20px",
+        color: "#000",
       }}
     >
       <Box sx={{ minWidth: "120px" }}>
@@ -116,6 +116,7 @@ const Category = observer(({ store }) => {
         <ModalCategory
           onShow={() => setIsModal((status) => !status)}
           onSubmit={handleOnSubmit}
+          cat={category}
         />
       )}
     </Box>

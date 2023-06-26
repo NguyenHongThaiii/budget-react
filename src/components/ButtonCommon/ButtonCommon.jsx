@@ -5,12 +5,32 @@ ButtonCommon.propTypes = {};
 
 function ButtonCommon({
   text = "Button",
-  color = "inherit",
+  color = "#fff",
   onShow = null,
   type = "button",
+  backgroundColor = "",
+  status = "inherit",
+  disabled = false,
 }) {
   return (
-    <Button type={type} color={color} variant="contained" onClick={onShow}>
+    <Button
+      sx={{
+        backgroundColor: backgroundColor,
+        color: color,
+        textTransform: "capitalize",
+        transition: "all 0.2s linear",
+        "&:hover": {
+          backgroundColor: backgroundColor,
+          color: color,
+          opacity: 0.8,
+        },
+      }}
+      type={type}
+      color={status}
+      variant="contained"
+      onClick={onShow}
+      disabled={disabled}
+    >
       {text}
     </Button>
   );

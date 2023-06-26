@@ -11,8 +11,8 @@ function ModalBillItem({ budgetItem = {} }) {
         alignItems: "flex-start",
         gap: "12px 24px",
         "&>img": {
-          width: "50px",
-          height: "50px",
+          width: "60px",
+          height: "60px",
         },
       }}
     >
@@ -26,7 +26,7 @@ function ModalBillItem({ budgetItem = {} }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: "12px",
+          gap: "2px",
         }}
       >
         <Box className="frame-body__title" sx={{ color: "#000" }}>
@@ -35,7 +35,7 @@ function ModalBillItem({ budgetItem = {} }) {
             component="span"
             className="frame-body__money"
             sx={{
-              color: budgetItem?.action == "income" ? "#30c4d7" : "#dd80df",
+              color: "#dd80df",
               fontWeight: 600,
             }}
           >
@@ -57,7 +57,7 @@ function ModalBillItem({ budgetItem = {} }) {
             fontWeight: "bold",
             fontStyle: "italic",
             fontSize: "16px",
-            color: budgetItem?.action == "income" ? "#30c4d7" : "#dd80df",
+            color: "#30c4d7",
           }}
         >
           Created at:
@@ -66,7 +66,7 @@ function ModalBillItem({ budgetItem = {} }) {
             className="frame-body__date"
             sx={{
               fontWeight: "bold",
-              color: budgetItem?.action == "income" ? "#30c4d7" : "#dd80df",
+              color: "#30c4d7",
             }}
           >
             {budgetItem?.date}

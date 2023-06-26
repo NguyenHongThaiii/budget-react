@@ -8,18 +8,19 @@ import ModalBillTemplate from "./components/ModalBillTemplate/ModalBillTemplate"
 const Bill = observer(({ store }) => {
   const [budgets, setBudgets] = useState([]);
   const [isModal, setIsModal] = useState(false);
-  const [budgetId, setBudgetId] = useState("");
+  const [parentId, setParentId] = useState("");
   const handleToggleModal = (id) => {
-    setBudgetId(id);
+    setParentId(id);
     setIsModal((prev) => !prev);
   };
   useEffect(() => {
-    store.getBudgetList();
+    (async () => {
+      await store.getBudgetList();
+    })();
   }, []);
-
   useEffect(() => {
-    setBudgets(JSON.parse(JSON.stringify(store.budgetList)));
-  }, [store.budgetList]);
+    setBudgets(JSON.parse(JSON.stringify(store.budgetParents)));
+  }, [store.budgetParents]);
 
   return (
     <Box
@@ -46,7 +47,7 @@ const Bill = observer(({ store }) => {
       {isModal && (
         <ModalBillTemplate
           onShow={() => setIsModal((prev) => !prev)}
-          budgetId={budgetId}
+          parentId={parentId}
           store={store}
         />
       )}

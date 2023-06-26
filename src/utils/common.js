@@ -1,7 +1,6 @@
-// moved on mobx get
-export function handleTotalBudget(store) {
-  const list = JSON.parse(JSON.stringify(store.budgetList));
-
+export function handleTotalEachBudget(store, parent) {
+  const budgets = JSON.parse(JSON.stringify(store.budgetList));
+  const list = budgets?.filter((item) => item?.parentId === parent?.id);
   return list.reduce((acc, item) => acc + item?.amount, 0);
 }
 export function handleTotalBill(store, action) {
