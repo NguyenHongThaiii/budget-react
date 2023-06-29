@@ -55,7 +55,9 @@ const Header = observer(({ store }) => {
             background: "#fff",
           }}
         >
-          ${store.getTotalBudget || 0}
+          {store.getTotalBudget < 0
+            ? `-$${-store.getTotalBudget} `
+            : `$${store.getTotalBudget}`}
         </Typography>
       </Box>
     </Box>

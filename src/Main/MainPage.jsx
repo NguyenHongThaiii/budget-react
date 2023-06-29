@@ -6,7 +6,7 @@ import Bill from "../Bill/Bill";
 import Category from "../Category/Category";
 import Header from "../Header/Header";
 
-const MainPage = observer(({ store }) => {
+const MainPage = ({ store }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!store.user) navigate("/login");
@@ -34,6 +34,6 @@ const MainPage = observer(({ store }) => {
       )}
     </Container>
   );
-});
+};
 
 export default MainPage;

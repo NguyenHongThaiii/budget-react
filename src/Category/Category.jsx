@@ -5,7 +5,7 @@ import ButtonMove from "../components/ButtonMove/ButtonMove";
 import CategoryItem from "./components/CategoryItem";
 import ModalCategory from "./components/Modal/ModalCategory";
 
-const Category = observer(({ store }) => {
+const Category = ({ store }) => {
   const [listCats, setListCats] = useState([]);
   const [slide, setSlide] = useState({
     countNext: 0,
@@ -121,6 +121,6 @@ const Category = observer(({ store }) => {
       )}
     </Box>
   );
-});
+};
 
 export default Category;

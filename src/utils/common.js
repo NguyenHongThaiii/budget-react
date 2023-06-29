@@ -14,3 +14,17 @@ export const handleReturnBudgetByAction = (action, budgets) => {
     if (budget.action === action) return budget;
   });
 };
+export function formatRelativeTime(timestamp) {
+  const currentTime = new Date().getTime();
+  const timeDiff = currentTime - timestamp;
+
+  const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+  if (daysDiff === 0) {
+    return "Today";
+  } else if (daysDiff === 1) {
+    return "Yesterday";
+  } else {
+    return `${daysDiff} days ago`;
+  }
+}

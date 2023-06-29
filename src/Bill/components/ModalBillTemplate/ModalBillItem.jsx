@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { formatRelativeTime } from "../../../utils";
 
 function ModalBillItem({ budgetItem = {} }) {
   return (
@@ -60,7 +61,7 @@ function ModalBillItem({ budgetItem = {} }) {
             color: "#30c4d7",
           }}
         >
-          Created at:
+          Created at:{" "}
           <Typography
             component="span"
             className="frame-body__date"
@@ -69,7 +70,7 @@ function ModalBillItem({ budgetItem = {} }) {
               color: "#30c4d7",
             }}
           >
-            {budgetItem?.date}
+            {formatRelativeTime(budgetItem?.date)}
           </Typography>
         </Box>
       </Box>

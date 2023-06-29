@@ -3,6 +3,7 @@ import {
   collection,
   getDoc,
   getDocs,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -33,8 +34,9 @@ class StoreState {
       getBudgetItemList: action,
       createBudgetParent: action,
       login: action,
-      getTotalBillIncome: computed,
-      getTotalBillCost: computed,
+      getTotalBill: action,
+      getTotalBillCost: action,
+      sortBudgetListByAtt: action,
       getTotalBudget: computed,
     });
   }
@@ -83,9 +85,9 @@ class StoreState {
       category?.type,
       formValues?.action
     );
-    const obj = {
+    const tempObj = {
       ...formValues,
-      date: new Date().toString().slice(0, 15),
+      date: new Date().getTime(),
       categoryId: category?.id,
       head: string,
       image: category?.image,
@@ -94,26 +96,15 @@ class StoreState {
     };
     if (!parent?.id) {
       const data = await this.createBudgetParent(category, formValues, string);
-      obj.parentId = data.id;
+      tempObj.parentId = data.id;
       this.budgetParents.push(data);
     }
-    const doc = await addDoc(this.budgetItemRef, obj);
+    const doc = await addDoc(this.budgetItemRef, tempObj);
 
-    obj.id = doc.id;
-    const data = [...this.budgetList, obj];
+    tempObj.id = doc.id;
+    const data = [...this.budgetList, tempObj];
     this.budgetList = data;
     this.budgetParents = [...this.budgetParents];
-
-    // addDoc(this.budgetItemRef, obj)
-    //   .then((doc) => {
-    //     runInAction(() => {
-    //       obj.id = doc.id;
-    //       const data = [...this.budgetList, obj];
-    //       this.budgetList = data;
-    //       this.budgetParents = [...this.budgetParents];
-    //     });
-    //   })
-    //   .catch((error) => console.log(error));
   };
   async getBudgetParentByCondition(type, action) {
     const q = query(
@@ -140,7 +131,7 @@ class StoreState {
   async createBudgetParent(category, formValues, string) {
     const obj = {
       action: formValues?.action,
-      date: new Date().toString().slice(0, 15),
+      date: new Date().getTime(),
       categoryId: category?.id,
       head: string,
       image: category?.image,
@@ -153,24 +144,98 @@ class StoreState {
     return { id: doc.id, ...docData };
   }
   login(user) {
-    console.log(user);
     this.user = user;
-    console.log(this.user.id);
   }
   logout() {
     this.user = null;
     localStorage.removeItem("user");
   }
-  get getTotalBillIncome() {
+  getTotalBill(parentId, action) {
     const list = this.budgetList;
-    const listBudgetByAction = handleReturnBudgetByAction("income", list);
-
-    return listBudgetByAction.reduce((acc, item) => acc + item?.amount, 0);
+    const listBudgetByAction = handleReturnBudgetByAction(action, list);
+    const listByParentId = listBudgetByAction?.filter(
+      (item) => item?.parentId === parentId
+    );
+    return listByParentId.reduce((acc, item) => acc + item?.amount, 0);
   }
-  get getTotalBillCost() {
+  getTotalBillCost() {
     const list = this.budgetList;
     const listBudgetByAction = handleReturnBudgetByAction("cost", list);
     return listBudgetByAction.reduce((acc, item) => acc + item?.amount, 0);
+  }
+
+  async sortBudgetListByAtt(name, value, action) {
+    let q;
+    if (name === "none")
+      q = query(
+        this.budgetParentRef,
+        where("action", "==", action),
+        where("userId", "==", this.user?.id),
+        orderBy("date", "asc")
+      );
+    else if (name === "amount") {
+      return this.fetchAndSortBudgetParents(value, action);
+    } else
+      q = query(
+        this.budgetParentRef,
+        where("action", "==", action),
+        where("userId", "==", this.user?.id),
+        orderBy(name, value)
+      );
+
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
+  }
+  async getTotalPrice(parentId, action) {
+    const q = query(
+      this.budgetItemRef,
+      where("parentId", "==", parentId),
+      where("userId", "==", this.user?.id),
+      where("action", "==", action)
+    );
+    const snapshot = await getDocs(q);
+
+    let totalPrice = 0;
+    snapshot.forEach((doc) => {
+      const item = doc.data();
+      totalPrice += item.amount;
+    });
+
+    return totalPrice;
+  }
+
+  async fetchAndSortBudgetParents(value, action) {
+    const q = query(
+      this.budgetParentRef,
+      where("action", "==", action),
+      where("userId", "==", this.user?.id)
+    );
+    const snapshot = await getDocs(q);
+
+    const promises = snapshot.docs.map(async (doc) => {
+      const parent = doc.data();
+      const parentId = doc.id;
+      const tempObj = {
+        ...parent,
+        id: parentId,
+      };
+      const totalPrice = await this.getTotalPrice(parentId, action);
+      tempObj.totalPrice = totalPrice;
+
+      return tempObj;
+    });
+    const budgetParents = await Promise.all(promises);
+
+    value === "asc"
+      ? budgetParents.sort((a, b) => a.totalPrice - b.totalPrice)
+      : budgetParents.sort((a, b) => b.totalPrice - a.totalPrice);
+
+    return budgetParents;
   }
   get getTotalBudget() {
     return this.budgetList.reduce((acc, item) => {

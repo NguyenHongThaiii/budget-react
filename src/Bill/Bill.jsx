@@ -5,10 +5,10 @@ import { handleReturnBudgetByAction } from "../utils";
 import BillTemplate from "./components/BillTemplate/BillTemplate";
 import ModalBillTemplate from "./components/ModalBillTemplate/ModalBillTemplate";
 
-const Bill = observer(({ store }) => {
-  const [budgets, setBudgets] = useState([]);
+const Bill = ({ store }) => {
   const [isModal, setIsModal] = useState(false);
   const [parentId, setParentId] = useState("");
+
   const handleToggleModal = (id) => {
     setParentId(id);
     setIsModal((prev) => !prev);
@@ -18,10 +18,6 @@ const Bill = observer(({ store }) => {
       await store.getBudgetList();
     })();
   }, []);
-  useEffect(() => {
-    setBudgets(JSON.parse(JSON.stringify(store.budgetParents)));
-  }, [store.budgetParents]);
-
   return (
     <Box
       className="bill"
@@ -34,16 +30,8 @@ const Bill = observer(({ store }) => {
         gap: "0 60px",
       }}
     >
-      <BillTemplate
-        budgetList={handleReturnBudgetByAction("income", budgets)}
-        type="income"
-        onShow={handleToggleModal}
-      />
-      <BillTemplate
-        type="cost"
-        onShow={handleToggleModal}
-        budgetList={handleReturnBudgetByAction("cost", budgets)}
-      />
+      <BillTemplate type="income" onShow={handleToggleModal} store={store} />
+      <BillTemplate type="cost" onShow={handleToggleModal} store={store} />
       {isModal && (
         <ModalBillTemplate
           onShow={() => setIsModal((prev) => !prev)}
@@ -53,6 +41,6 @@ const Bill = observer(({ store }) => {
       )}
     </Box>
   );
-});
+};
 
 export default Bill;

@@ -66,10 +66,7 @@ function ModalBillTemplate({ onShow = null, parentId = "", store = {} }) {
               fontSize: 24,
             }}
           >
-            $
-            {budgetList[0]?.action === "income"
-              ? store.getTotalBillIncome
-              : store.getTotalBillCost}
+            ${store.getTotalBill(parentId, budgetList[0]?.action)}
           </Box>
           <Box className="frame-body__head" sx={{ fontSize: 24 }}>
             {budgetList[0]?.head}

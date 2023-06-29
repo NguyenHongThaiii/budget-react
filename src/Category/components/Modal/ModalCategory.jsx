@@ -37,9 +37,9 @@ function ModalCategory({ onShow = null, onSubmit = null, cat = {} }) {
     },
     resolver: yupResolver(schema),
   });
-  const handleOnSubmit = (formValues) => {
+  const handleOnSubmit = async (formValues) => {
     if (!onSubmit) return;
-    onSubmit(formValues);
+    await onSubmit(formValues);
   };
   return (
     <Box
@@ -196,6 +196,7 @@ function ModalCategory({ onShow = null, onSubmit = null, cat = {} }) {
             }}
           >
             <ButtonCommon
+              disabled={isSubmitting}
               text="Cancel"
               onShow={onShow}
               color="#fff"

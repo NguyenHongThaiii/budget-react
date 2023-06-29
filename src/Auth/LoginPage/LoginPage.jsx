@@ -37,7 +37,6 @@ const LoginPage = observer(({ store }) => {
       const { email, password } = values;
 
       const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
       store.login({ id: user.user.uid, email });
       localStorage.setItem(
         "user",
