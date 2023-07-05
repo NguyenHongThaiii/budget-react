@@ -4,8 +4,7 @@ import ButtonMove from "../components/ButtonMove/ButtonMove";
 import { useStore } from "../../store/context/store-context";
 import CategoryItem from "./components/CategoryItem";
 import ModalCategory from "./components/Modal/ModalCategory";
-import { QUANTITY_SLIDE_SHOW } from "../../utils";
-
+import { GAP_SLIDE, QUANTITY_SLIDE_SHOW } from "../../utils";
 const Category = ({}) => {
   const store = useStore();
   const [listCats, setListCats] = useState([]);
@@ -29,7 +28,7 @@ const Category = ({}) => {
 
       Array.from(budgetListRef.current.childNodes).map((item, index) => {
         item.style.transform =
-          "translateX(" + (-item.offsetWidth - 30) * temp + "px" + ")";
+          "translateX(" + (-item.offsetWidth - GAP_SLIDE) * temp + "px" + ")";
       });
       setSlide((old) => ({ ...old, countNext: temp }));
     } else {
@@ -40,7 +39,7 @@ const Category = ({}) => {
       Array.from(budgetListRef.current.childNodes).map((item, index) => {
         item.style.transform =
           "translateX(" +
-          (-item.offsetWidth - 30) * slide.countPrev +
+          (-item.offsetWidth - GAP_SLIDE) * slide.countPrev +
           "px" +
           ")";
       });
@@ -109,7 +108,7 @@ const Category = ({}) => {
           listStyle: "none",
           display: "flex",
           alignItems: "center",
-          gap: "0 30px",
+          gap: `0 ${GAP_SLIDE}px`,
           overflow: "hidden",
           padding: "20px",
         }}
