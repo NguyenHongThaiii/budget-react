@@ -1,10 +1,10 @@
 import { addDoc, collection, getDoc } from "firebase/firestore";
 import {
   NAME_COLLECTION_FIREBASE,
-  firebaseGetItemByOneCondition,
   handleReturnBudgetByAction,
 } from "../../utils";
 import { Service } from "./service";
+import { firebaseGetItemByOneCondition } from "../../firebase/firebase-service";
 
 export class StoreService extends Service {
   catRef;
