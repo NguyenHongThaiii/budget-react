@@ -1,11 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import { observer } from "mobx-react";
 import React, { useEffect, useRef, useState } from "react";
 import ButtonMove from "../components/ButtonMove/ButtonMove";
+import { useStore } from "../../store/context/store-context";
 import CategoryItem from "./components/CategoryItem";
 import ModalCategory from "./components/Modal/ModalCategory";
+import { QUANTITY_SLIDE_SHOW } from "../../utils";
 
-const Category = ({ store }) => {
+const Category = ({}) => {
+  const store = useStore();
   const [listCats, setListCats] = useState([]);
   const [slide, setSlide] = useState({
     countNext: 0,
@@ -18,8 +20,12 @@ const Category = ({ store }) => {
   const [category, setCategory] = useState({});
   const handleSlideListBudget = (type = "next") => {
     if (type === "next") {
-      if (slide.countNext >= budgetListRef.current.children.length - 3) return;
-      const temp = slide.countNext + 3;
+      if (
+        slide.countNext >=
+        budgetListRef.current.children.length - QUANTITY_SLIDE_SHOW
+      )
+        return;
+      const temp = slide.countNext + QUANTITY_SLIDE_SHOW;
 
       Array.from(budgetListRef.current.childNodes).map((item, index) => {
         item.style.transform =
@@ -29,8 +35,8 @@ const Category = ({ store }) => {
     } else {
       slide.countPrev = slide.countNext;
       if (slide.countPrev == 0) return;
-      slide.countPrev -= 3;
-      slide.countNext -= 3;
+      slide.countPrev -= QUANTITY_SLIDE_SHOW;
+      slide.countNext -= QUANTITY_SLIDE_SHOW;
       Array.from(budgetListRef.current.childNodes).map((item, index) => {
         item.style.transform =
           "translateX(" +

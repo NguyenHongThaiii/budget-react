@@ -1,7 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { db } from "../../../firebase/firebase-config";
 import ModalBillItem from "./ModalBillItem";
 
 function ModalBillTemplate({ onShow = null, parentId = "", store = {} }) {

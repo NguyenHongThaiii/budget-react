@@ -1,13 +1,7 @@
-import { Box, Typography, Button } from "@mui/material";
-import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
+import React from "react";
 
-const Header = observer(({ store }) => {
-  useEffect(() => {
-    (async () => {
-      await store.getBudgetItemList();
-    })();
-  }, []);
+const Header = ({ getTotalBudget }) => {
   return (
     <Box
       component="header"
@@ -55,13 +49,11 @@ const Header = observer(({ store }) => {
             background: "#fff",
           }}
         >
-          {store.getTotalBudget < 0
-            ? `-$${-store.getTotalBudget} `
-            : `$${store.getTotalBudget}`}
+          {getTotalBudget < 0 ? `-$${-getTotalBudget} ` : `$${getTotalBudget}`}
         </Typography>
       </Box>
     </Box>
   );
-});
+};
 
 export default Header;

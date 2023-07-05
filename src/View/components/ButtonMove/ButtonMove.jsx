@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { Typography } from "@mui/material";
 
-const ButtonMove = forwardRef((props, ref = null) => {
+const ButtonMove = forwardRef((props, ref) => {
   return (
     <Typography
       onClick={() => props.onClick(props.type)}

@@ -1,52 +1,57 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import ButtonCommon from "../../components/ButtonCommon/ButtonCommon";
 import InputField from "../../components/InputField/InputField";
-import { auth } from "../../firebase/firebase-config";
-import { observer } from "mobx-react";
+import { auth, db } from "../../../firebase/firebase-config";
 
 const schema = yup.object({
   email: yup.string().required(),
-  password: yup.string().required(),
+  password: yup.string().min(6, "min 6 characters").required(),
+  passwordConfirm: yup
+    .string()
+    .required("Please retype your password.")
+    .oneOf([yup.ref("password")], "Password does not match."),
 });
 
-const LoginPage = observer(({ store }) => {
+function RegisterPage({ store }) {
   const navigate = useNavigate();
-
   if (store.user?.id) return navigate("/");
-  const [error, setError] = useState("");
+
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       email: "",
       password: "",
+      passwordConfirm: "",
     },
     resolver: yupResolver(schema),
   });
+  const [error, setError] = useState("");
+
+  const userRef = collection(db, "users");
 
   const handleOnSubmit = async (values) => {
     try {
       const { email, password } = values;
-
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      store.login({ id: user.user.uid, email });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ id: user.user.uid, email })
-      );
-
-      navigate("/");
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+      await addDoc(userRef, {
+        email,
+        password,
+        id: user.user.uid,
+      });
+      navigate("/login");
     } catch (error) {
       console.log(error.message);
-      setError("Email or password is not correct");
+      setError("Something went wrong. Please try again!");
     }
   };
   return (
@@ -72,7 +77,7 @@ const LoginPage = observer(({ store }) => {
       >
         <Typography component="h1" sx={{ fontSize: 32, fontWeight: "bold" }}>
           {" "}
-          Login Form
+          Register Form
         </Typography>
         <Box sx={{ "& div": { width: "100% " } }}>
           <InputField
@@ -90,6 +95,14 @@ const LoginPage = observer(({ store }) => {
             type="password"
           />
         </Box>
+        <Box sx={{ "& div": { width: "100% " } }}>
+          <InputField
+            control={control}
+            name="passwordConfirm"
+            placeholder="Fill out your password retype"
+            type="password"
+          />
+        </Box>
 
         <ButtonCommon
           disabled={isSubmitting}
@@ -97,20 +110,21 @@ const LoginPage = observer(({ store }) => {
           status="success"
           type="submit"
         />
+        {error && (
+          <Typography
+            sx={{
+              mb: 1,
+              color: "red",
+              fontSize: 16,
+              fontStyle: "italic",
+              fontWeight: "bold",
+            }}
+          >
+            {error}
+          </Typography>
+        )}
       </Box>
-      {error && (
-        <Typography
-          sx={{
-            mb: 1,
-            color: "red",
-            fontSize: 16,
-            fontStyle: "italic",
-            fontWeight: "bold",
-          }}
-        >
-          {error}
-        </Typography>
-      )}
+
       <Box
         sx={{
           "& > a ": {
@@ -124,10 +138,10 @@ const LoginPage = observer(({ store }) => {
           pb: 1,
         }}
       >
-        <Link to={"/register"}>Yet have account? Register here!</Link>
+        <Link to={"/login"}>You have account? Login here!</Link>
       </Box>
     </Box>
   );
-});
+}
 
-export default LoginPage;
+export default RegisterPage;

@@ -1,14 +1,13 @@
 import { Box } from "@mui/material";
-import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import { handleReturnBudgetByAction } from "../utils";
+import { useStore } from "../../store/context/store-context";
 import BillTemplate from "./components/BillTemplate/BillTemplate";
 import ModalBillTemplate from "./components/ModalBillTemplate/ModalBillTemplate";
 
-const Bill = ({ store }) => {
+const Bill = ({}) => {
+  const store = useStore();
   const [isModal, setIsModal] = useState(false);
   const [parentId, setParentId] = useState("");
-
   const handleToggleModal = (id) => {
     setParentId(id);
     setIsModal((prev) => !prev);
