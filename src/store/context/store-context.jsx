@@ -10,6 +10,6 @@ export const StoreProvider = ({ children, store }) => {
 export const useStore = () => {
   const context = useContext(StoreContext);
   if (typeof context === "undefined")
-    throw new Error("useStore must be used within a AuthProvider");
+    throw new Error("useStore must be used within a StoreProvider");
   return context;
 };
