@@ -5,51 +5,22 @@ import { useStore } from "../../store/context/store-context";
 import CategoryItem from "./components/CategoryItem";
 import ModalCategory from "./components/Modal/ModalCategory";
 import { GAP_SLIDE, QUANTITY_SLIDE_SHOW } from "../../utils";
+import { useSlideShow } from "../../hooks/useSlideShow";
 const Category = ({}) => {
   const store = useStore();
   const [listCats, setListCats] = useState([]);
-  const [slide, setSlide] = useState({
-    countNext: 0,
-    countPrev: 0,
-  });
   const [isModal, setIsModal] = useState(false);
   const btnPrevRef = useRef();
   const btnNextRef = useRef();
-  const budgetListRef = useRef();
   const [category, setCategory] = useState({});
-  const handleSlideListBudget = (type = "next") => {
-    if (type === "next") {
-      if (
-        slide.countNext >=
-        budgetListRef.current.children.length - QUANTITY_SLIDE_SHOW
-      )
-        return;
-      const temp = slide.countNext + QUANTITY_SLIDE_SHOW;
-
-      Array.from(budgetListRef.current.childNodes).map((item, index) => {
-        item.style.transform =
-          "translateX(" + (-item.offsetWidth - GAP_SLIDE) * temp + "px" + ")";
-      });
-      setSlide((old) => ({ ...old, countNext: temp }));
-    } else {
-      slide.countPrev = slide.countNext;
-      if (slide.countPrev == 0) return;
-      slide.countPrev -= QUANTITY_SLIDE_SHOW;
-      slide.countNext -= QUANTITY_SLIDE_SHOW;
-      Array.from(budgetListRef.current.childNodes).map((item, index) => {
-        item.style.transform =
-          "translateX(" +
-          (-item.offsetWidth - GAP_SLIDE) * slide.countPrev +
-          "px" +
-          ")";
-      });
-    }
-  };
+  const budgetListRef = useRef();
+  const { handleSlideListBudget } = useSlideShow(budgetListRef);
 
   const handleToggleModal = (cat) => {
     setIsModal((prev) => !prev);
     setCategory(cat);
   };
+
   useEffect(() => {
     (async () => {
       await store.getCategoryList();
