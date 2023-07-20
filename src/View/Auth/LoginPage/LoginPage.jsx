@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
+import ButtonCommon from "@views/components/ButtonCommon/ButtonCommon";
+import InputField from "@views/components/InputField/InputField";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import ButtonCommon from "../../components/ButtonCommon/ButtonCommon";
-import InputField from "../../components/InputField/InputField";
 
 const schema = yup.object({
   email: yup.string().required(),
@@ -16,7 +16,6 @@ const schema = yup.object({
 const LoginPage = observer(({ store }) => {
   const navigate = useNavigate();
 
-  if (store.user?.id) return navigate("/");
   const [error, setError] = useState("");
   const {
     control,
@@ -41,6 +40,10 @@ const LoginPage = observer(({ store }) => {
       setError("Email or password is not correct");
     }
   };
+  useEffect(() => {
+    if (store.user?.id) return navigate("/");
+  }, []);
+  console.log("object");
   return (
     <Box
       sx={{
@@ -66,6 +69,7 @@ const LoginPage = observer(({ store }) => {
           {" "}
           Login Form
         </Typography>
+
         <Box sx={{ "& div": { width: "100% " } }}>
           <InputField
             control={control}

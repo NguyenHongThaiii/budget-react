@@ -1,5 +1,5 @@
+import { GAP_SLIDE, QUANTITY_SLIDE_SHOW } from "@utils";
 import { useState } from "react";
-import { GAP_SLIDE, QUANTITY_SLIDE_SHOW } from "../utils";
 
 export function useSlideShow(budgetListRef) {
   const [slide, setSlide] = useState({

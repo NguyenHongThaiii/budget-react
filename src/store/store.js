@@ -1,5 +1,5 @@
+import { db } from "@firebase-config";
 import { action, computed, makeAutoObservable, observable } from "mobx";
-import { db } from "../firebase/firebase-config";
 import { AuthService } from "./service/auth-service";
 import { StoreService } from "./service/store-service";
 class StoreState {

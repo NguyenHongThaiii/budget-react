@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
+import { formatRelativeTime } from "@utils";
 import React from "react";
-import { formatRelativeTime } from "../../../../utils";
 
 function ModalBillItem({ budgetItem = {} }) {
   return (

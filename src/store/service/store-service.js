@@ -1,49 +1,50 @@
+import { FirebaseService } from "@firebase-config";
+import { NAME_COLLECTION_FIREBASE, handleReturnBudgetByAction } from "@utils";
 import { addDoc, collection, getDoc } from "firebase/firestore";
-import {
-  NAME_COLLECTION_FIREBASE,
-  handleReturnBudgetByAction,
-} from "../../utils";
 import { Service } from "./service";
-import { firebaseGetItemByOneCondition } from "../../firebase/firebase-service";
 
 export class StoreService extends Service {
-  catRef;
-  budgetItemRef;
-  budgetParentRef;
-  userRef;
   constructor(db) {
     super(db);
     this.catRef = collection(db, NAME_COLLECTION_FIREBASE.category);
     this.budgetItemRef = collection(db, NAME_COLLECTION_FIREBASE.item);
     this.budgetParentRef = collection(db, NAME_COLLECTION_FIREBASE.parent);
     this.userRef = collection(db, NAME_COLLECTION_FIREBASE.user);
+    this.firebaseService = new FirebaseService();
   }
 
   async getCategoryList() {
-    const data = await firebaseGetItemByOneCondition(this.catRef, []);
+    this.firebaseService;
+    const data = await this.firebaseService.getItemByConditions(this.catRef);
 
     return data;
   }
   async getBudgetList(user) {
     if (!user) return;
-    const data = await firebaseGetItemByOneCondition(this.budgetParentRef, [
-      {
-        field: "userId",
-        operand: "==",
-        value: user?.id,
-      },
-    ]);
+    const data = await this.firebaseService.getItemByConditions(
+      this.budgetParentRef,
+      [
+        {
+          field: "userId",
+          operand: "==",
+          value: user?.id,
+        },
+      ]
+    );
     return data;
   }
   async getBudgetItemList(user) {
     if (!user) return;
-    const data = await firebaseGetItemByOneCondition(this.budgetItemRef, [
-      {
-        field: "userId",
-        operand: "==",
-        value: user?.id,
-      },
-    ]);
+    const data = await this.firebaseService.getItemByConditions(
+      this.budgetItemRef,
+      [
+        {
+          field: "userId",
+          operand: "==",
+          value: user?.id,
+        },
+      ]
+    );
 
     return data;
   }
@@ -82,23 +83,26 @@ export class StoreService extends Service {
     };
   }
   async getBudgetParentByCondition(type, action, user) {
-    const data = await firebaseGetItemByOneCondition(this.budgetParentRef, [
-      {
-        field: "type",
-        operand: "==",
-        value: type,
-      },
-      {
-        field: "action",
-        operand: "==",
-        value: action,
-      },
-      {
-        field: "userId",
-        operand: "==",
-        value: user?.id,
-      },
-    ]);
+    const data = await this.firebaseService.getItemByConditions(
+      this.budgetParentRef,
+      [
+        {
+          field: "type",
+          operand: "==",
+          value: type,
+        },
+        {
+          field: "action",
+          operand: "==",
+          value: action,
+        },
+        {
+          field: "userId",
+          operand: "==",
+          value: user?.id,
+        },
+      ]
+    );
     return data[0];
   }
   async createBudgetParent(formValues, category, user, string) {
@@ -132,7 +136,7 @@ export class StoreService extends Service {
   async sortBudgetListByAtt(name, value, action, user) {
     let data;
     if (name == "none")
-      data = await firebaseGetItemByOneCondition(
+      data = await this.firebaseService.getItemByConditions(
         this.budgetParentRef,
         [
           {
@@ -156,7 +160,7 @@ export class StoreService extends Service {
     else if (name == "amount")
       data = await this.fetchAndSortBudgetParents(action, user, value);
     else
-      data = await firebaseGetItemByOneCondition(
+      data = await this.firebaseService.getItemByConditions(
         this.budgetParentRef,
         [
           {
@@ -180,39 +184,45 @@ export class StoreService extends Service {
     return data;
   }
   async getTotalPrice(parentId, user, action) {
-    const data = await firebaseGetItemByOneCondition(this.budgetItemRef, [
-      {
-        field: "parentId",
-        operand: "==",
-        value: parentId,
-      },
-      {
-        field: "userId",
-        operand: "==",
-        value: user?.id,
-      },
-      {
-        field: "action",
-        operand: "==",
-        value: action,
-      },
-    ]);
+    const data = await this.firebaseService.getItemByConditions(
+      this.budgetItemRef,
+      [
+        {
+          field: "parentId",
+          operand: "==",
+          value: parentId,
+        },
+        {
+          field: "userId",
+          operand: "==",
+          value: user?.id,
+        },
+        {
+          field: "action",
+          operand: "==",
+          value: action,
+        },
+      ]
+    );
 
     return data.reduce((acc, item) => acc + item?.amount, 0);
   }
   async fetchAndSortBudgetParents(action, user, value) {
-    const data = await firebaseGetItemByOneCondition(this.budgetParentRef, [
-      {
-        field: "action",
-        operand: "==",
-        value: action,
-      },
-      {
-        field: "userId",
-        operand: "==",
-        value: user?.id,
-      },
-    ]);
+    const data = await this.firebaseService.getItemByConditions(
+      this.budgetParentRef,
+      [
+        {
+          field: "action",
+          operand: "==",
+          value: action,
+        },
+        {
+          field: "userId",
+          operand: "==",
+          value: user?.id,
+        },
+      ]
+    );
     const promises = data.map(async (item) => {
       const totalPrice = await this.getTotalPrice(item.id, user, item.action);
       item.totalPrice = totalPrice;

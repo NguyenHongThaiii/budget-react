@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useStore } from "../../store/context/store-context";
+import { useStore } from "@store/context/store-context";
 import BillTemplate from "./components/BillTemplate/BillTemplate";
 import ModalBillTemplate from "./components/ModalBillTemplate/ModalBillTemplate";
 
@@ -12,6 +12,7 @@ const Bill = ({}) => {
     setParentId(id);
     setIsModal((prev) => !prev);
   };
+
   useEffect(() => {
     (async () => {
       await store.getBudgetList();

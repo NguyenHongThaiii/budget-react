@@ -1,11 +1,11 @@
-import { Container, Button, Box } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
+import { StoreProvider } from "@store/context/store-context";
+import Bill from "@views/Bill/Bill";
+import Category from "@views/Category/Category";
+import Header from "@views/Header/Header";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Bill from "../Bill/Bill";
-import Category from "../Category/Category";
-import Header from "../Header/Header";
-import { StoreProvider } from "../../store/context/store-context";
 
 const MainPage = observer(({ store }) => {
   const navigate = useNavigate();

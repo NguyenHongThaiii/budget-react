@@ -1,14 +1,14 @@
+import { auth, db } from "@firebase-config";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
+import ButtonCommon from "@views/components/ButtonCommon/ButtonCommon";
+import InputField from "@views/components/InputField/InputField";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import ButtonCommon from "../../components/ButtonCommon/ButtonCommon";
-import InputField from "../../components/InputField/InputField";
-import { auth, db } from "../../../firebase/firebase-config";
 
 const schema = yup.object({
   email: yup.string().required(),

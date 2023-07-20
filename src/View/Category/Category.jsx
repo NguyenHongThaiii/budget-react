@@ -1,11 +1,11 @@
+import { useSlideShow } from "@hooks/useSlideShow";
 import { Box, Typography } from "@mui/material";
+import { useStore } from "@store/context/store-context";
+import { GAP_SLIDE } from "@utils";
+import ButtonMove from "@views/components/ButtonMove/ButtonMove";
 import React, { useEffect, useRef, useState } from "react";
-import ButtonMove from "../components/ButtonMove/ButtonMove";
-import { useStore } from "../../store/context/store-context";
 import CategoryItem from "./components/CategoryItem";
 import ModalCategory from "./components/Modal/ModalCategory";
-import { GAP_SLIDE, QUANTITY_SLIDE_SHOW } from "../../utils";
-import { useSlideShow } from "../../hooks/useSlideShow";
 const Category = ({}) => {
   const store = useStore();
   const [listCats, setListCats] = useState([]);
@@ -54,8 +54,8 @@ const Category = ({}) => {
           sx={{
             display: "flex",
             columnGap: 1,
-            position: "relative", // Add this line
-            zIndex: 1, // Add this line
+            position: "relative",
+            zIndex: 1,
           }}
         >
           <ButtonMove

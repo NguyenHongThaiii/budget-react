@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
+import ButtonCommon from "@views/components/ButtonCommon/ButtonCommon";
+import InputField from "@views/components/InputField/InputField";
+import RadioField from "@views/components/RadioField/RadioField";
+import TextareaField from "@views/components/TextAreaField/TextareaField";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import ButtonCommon from "../../../components/ButtonCommon/ButtonCommon";
-import InputField from "../../../components/InputField/InputField";
-import RadioField from "../../../components/RadioField/RadioField";
-import TextareaField from "../../../components/TextAreaField/TextareaField";
 
 const schema = yup
   .object({

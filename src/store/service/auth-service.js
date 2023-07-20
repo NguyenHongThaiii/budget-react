@@ -1,6 +1,6 @@
+import { auth } from "@firebase-config";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { Service } from "./service";
-import { auth } from "../../firebase/firebase-config";
 
 export class AuthService extends Service {
   constructor(db) {

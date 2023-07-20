@@ -1,9 +1,39 @@
 import { Box } from "@mui/material";
+import SelectField from "@views/components/SelectField/SelectField";
+import TypographyCustom from "@views/components/TypographyCustom/TypographyCustom";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import SelectField from "./../../../components/SelectField/SelectField";
 import BillTemplateItem from "./BillTemplateItem";
-import { handleReturnBudgetByAction } from "../../../../utils";
+const options = [
+  {
+    value: "date?asc",
+    label: "Date asc",
+  },
+  {
+    value: "date?desc",
+    label: "Date desc",
+  },
+  {
+    value: "head?asc",
+    label: "Name A-Z",
+  },
+  {
+    value: "head?desc",
+    label: "Name Z-A",
+  },
+  {
+    value: "amount?asc",
+    label: "Spending asc",
+  },
+  {
+    value: "amount?desc",
+    label: "Spending desc",
+  },
+  {
+    value: "none",
+    label: "None",
+  },
+];
 
 const BillTemplate = ({ type = "income", onShow = null, store = {} }) => {
   const [budgets, setBudgets] = useState([]);
@@ -43,10 +73,9 @@ const BillTemplate = ({ type = "income", onShow = null, store = {} }) => {
         padding: 0,
       }}
     >
-      <Box
-        className="bill-template__title bill--income"
-        sx={{
-          color: type === "income" ? "#30c4d7" : "#dd80df",
+      <TypographyCustom
+        type={type}
+        customSx={{
           fontSize: "20px",
           fontWeight: "600",
           margin: "0 0 20px",
@@ -54,8 +83,7 @@ const BillTemplate = ({ type = "income", onShow = null, store = {} }) => {
         }}
       >
         {type}
-      </Box>
-
+      </TypographyCustom>
       {budgets.length !== 0 && (
         <Box component="form" onSubmit={handleFormSubmit}>
           <SelectField
@@ -63,36 +91,7 @@ const BillTemplate = ({ type = "income", onShow = null, store = {} }) => {
             control={control}
             label="Sort"
             name="sort"
-            options={[
-              {
-                value: "date?asc",
-                label: "Date asc",
-              },
-              {
-                value: "date?desc",
-                label: "Date desc",
-              },
-              {
-                value: "head?asc",
-                label: "Name A-Z",
-              },
-              {
-                value: "head?desc",
-                label: "Name Z-A",
-              },
-              {
-                value: "amount?asc",
-                label: "Spending asc",
-              },
-              {
-                value: "amount?desc",
-                label: "Spending desc",
-              },
-              {
-                value: "none",
-                label: "None",
-              },
-            ]}
+            options={options}
           />
         </Box>
       )}
