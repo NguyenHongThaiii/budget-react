@@ -12,7 +12,7 @@ function TypographyCustom({ type, customSx, ...typographyProps }) {
       sx={{
         color: textColor,
         textTransform: "capitalize",
-        ...typographyProps.sx,
+        // ...typographyProps.sx,
         ...customSx,
       }}
     >

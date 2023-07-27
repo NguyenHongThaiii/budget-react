@@ -4,3 +4,27 @@
 2. Tạo thêm module serivce để tách logic ở store ra (store-service + auth-service + firebase-service)
 3. Tạo thêm folder constant để lưu những giá trị hằng
 4. Sửa lại slide show category dynamic không còn static
+
+## Propose architecture: layer? service? data? (Design pattern)
+
+1. Layer
+
+- ![Alt text](image.png)
+
+2. Data
+
+- Sử dụng firebase store
+  ![Alt text](image-1.png)
+- https://dbdiagram.io/d/64c230e502bd1c4a5ec8ef02
+
+3. Propose scope: stack (Technology)
+   - Language: Reactjs
+   - DBMS: Firebase-firestore
+   - State management: React-context + mobx
+   - UI library: Material ui
+   - Tools build: Vitejs
+   - Flow:
+     - Có tài khoản:
+       ![Alt text](image-2.png)
+     - Chua có tài khoản:
+       ![Alt text](image-3.png)
