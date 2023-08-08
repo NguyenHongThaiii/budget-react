@@ -1,3 +1,10 @@
+## Hướng dẫn download code và chạy project
+
+- Yêu cầu đã cài node và git
+- Bước 1: Gõ lệnh "git clone https://github.com/NguyenHongThaiii/budget-react.git"
+- Bước 2: Mở terminal với vị trí project và gõ lệnh "yarn" hoặc "npm i" nếu sử dụng npm
+- Bước 3: Gõ lệnh "yarn dev" hoặc "npm run dev" nếu sử dụng npm
+
 ## CÁC TÍNH NĂNG ĐƯỢC UPDATE
 
 1. Áp dụng context vào mobx (nhưng vẫn sử dụng chung 1 store vì thấy auth-store không cần thiết vì auth không có nhiều data)
