@@ -14,6 +14,7 @@ export default defineConfig({
       "@firebase-config": path.resolve(__dirname, "src/firebase"),
       "@hooks": path.resolve(__dirname, "src/hooks"),
       "@store": path.resolve(__dirname, "src/store"),
+      "@test": path.resolve(__dirname, "src/test"),
     },
   },
 });
