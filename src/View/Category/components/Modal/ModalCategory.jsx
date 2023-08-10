@@ -150,6 +150,7 @@ function ModalCategory({ onShow = null, onSubmit = null, cat = {} }) {
           >
             <RadioField
               textLabel="Is this your income?"
+              id="income"
               name="action"
               defaultValue="income"
               htmlFor="income"
@@ -168,6 +169,7 @@ function ModalCategory({ onShow = null, onSubmit = null, cat = {} }) {
           >
             <RadioField
               textLabel="Is this your cost?"
+              id="cost"
               name="action"
               defaultValue="cost"
               htmlFor="cost"

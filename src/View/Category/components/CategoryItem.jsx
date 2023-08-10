@@ -12,6 +12,7 @@ function CategoryItem({ cat = {}, onShow = null }) {
       }}
     >
       <Box
+        id={`category_${cat.name}`}
         onClick={() => onShow(cat)}
         sx={{
           padding: "20px",

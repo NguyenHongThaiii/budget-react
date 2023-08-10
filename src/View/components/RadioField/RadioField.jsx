@@ -13,6 +13,7 @@ function RadioField({
   htmlFor = "htmlfor",
   control = null,
   checked,
+  ...props
 }) {
   const {
     field: { onChange, onBlur, value, ref },
@@ -37,6 +38,7 @@ function RadioField({
         onBlur={onBlur}
         value={defaultValue}
         error={value.toString()}
+        {...props}
       />
       <label htmlFor={htmlFor} className="label-cost">
         {textLabel}

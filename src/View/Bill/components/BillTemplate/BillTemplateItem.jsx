@@ -11,6 +11,7 @@ const BillTemplateItem = ({
 }) => {
   return (
     <Typography
+      id={`parent_${item.image.slice(0, -4)}_${item.action}`}
       onClick={() => onShow(item?.id)}
       component="li"
       className="bill-template__box"
